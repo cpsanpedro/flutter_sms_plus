@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:sms/contact.dart';
 import 'package:sms/sms.dart';
@@ -111,6 +110,6 @@ class _ThreadsState extends State<Threads> with TickerProviderStateMixin {
     Contact contact = await contacts.queryContact(sms.address);
     final snackBar = new SnackBar(
         content: new Text('Message to ${contact.fullName} delivered'));
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

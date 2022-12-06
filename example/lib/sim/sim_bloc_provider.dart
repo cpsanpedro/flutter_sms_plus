@@ -9,9 +9,9 @@ class SimCardsBlocProvider extends InheritedWidget {
   final SimCardsBloc simCardBloc;
 
   static SimCardsBloc of(BuildContext context) {
-    final provider = context.inheritFromWidgetOfExactType(SimCardsBlocProvider);
+    final provider = context.dependOnInheritedWidgetOfExactType<SimCardsBlocProvider>();
     if (provider != null) {
-      return (provider as SimCardsBlocProvider).simCardBloc;
+      return provider.simCardBloc;
     }
 
     return null;

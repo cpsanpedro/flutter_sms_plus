@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:sms/contact.dart';
 import 'package:sms/sms.dart';
@@ -41,17 +40,10 @@ class FormSend extends StatelessWidget {
                   builder: (context, snapshot) {
                     return new Row(
                       children: [
-                        new Icon(
-                          Icons.sim_card,
-                          color: snapshot.data.state == SimCardState.Ready
-                              ? Colors.blue
-                              : Colors.grey
-                        ),
-                        new Text(snapshot.data.slot.toString(),
-                          style: new TextStyle(color: snapshot.data.state == SimCardState.Ready
-                              ? Colors.black
-                              : Colors.grey
-                          ),
+                        new Icon(Icons.sim_card, color: snapshot.data.state == SimCardState.Ready ? Colors.blue : Colors.grey),
+                        new Text(
+                          snapshot.data.slot.toString(),
+                          style: new TextStyle(color: snapshot.data.state == SimCardState.Ready ? Colors.black : Colors.grey),
                         ),
                       ],
                     );
@@ -72,8 +64,7 @@ class FormSend extends StatelessWidget {
   }
 
   void _sendMessage(BuildContext context) async {
-    SmsMessage message =
-        new SmsMessage(thread.address, _textField.text, threadId: thread.id);
+    SmsMessage message = new SmsMessage(thread.address, _textField.text, threadId: thread.id);
     message.onStateChanged.listen((SmsMessageState state) {
       if (state == SmsMessageState.Delivered) {
         print('Message delivered to ${message.address}');
@@ -93,8 +84,7 @@ class FormSend extends StatelessWidget {
   void _notifyDelivery(SmsMessage message, BuildContext context) async {
     final contacts = new ContactQuery();
     Contact contact = await contacts.queryContact(message.address);
-    final snackBar = new SnackBar(
-        content: new Text('Message to ${contact.fullName} delivered'));
-    Scaffold.of(context).showSnackBar(snackBar);
+    final snackBar = new SnackBar(content: new Text('Message to ${contact.fullName} delivered'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

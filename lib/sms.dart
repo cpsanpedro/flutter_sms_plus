@@ -27,25 +27,18 @@ enum SmsMessageKind {
 ///
 /// Used to send message or used to read message.
 class SmsMessage implements Comparable<SmsMessage> {
-  int _id;
-  int _threadId;
-  String _address;
-  String _body;
-  bool _read;
-  DateTime _date;
-  DateTime _dateSent;
-  SmsMessageKind _kind;
+  int? _id;
+  int? _threadId;
+  String? _address;
+  String? _body;
+  bool? _read;
+  DateTime? _date;
+  DateTime? _dateSent;
+  SmsMessageKind? _kind;
   SmsMessageState _state = SmsMessageState.None;
-  StreamController<SmsMessageState> _stateStreamController =
-      new StreamController<SmsMessageState>();
+  StreamController<SmsMessageState> _stateStreamController = new StreamController<SmsMessageState>();
 
-  SmsMessage(this._address, this._body,
-      {int id,
-      int threadId,
-      bool read,
-      DateTime date,
-      DateTime dateSent,
-      SmsMessageKind kind}) {
+  SmsMessage(this._address, this._body, {int? id, int? threadId, bool? read, DateTime? date, DateTime? dateSent, SmsMessageKind? kind}) {
     this._id = id;
     this._threadId = threadId;
     this._read = read;
@@ -65,8 +58,8 @@ class SmsMessage implements Comparable<SmsMessage> {
   /// }
   /// ```
   SmsMessage.fromJson(Map data) {
-    this._address = data["address"];
-    this._body = data["body"];
+    this._address = data["address"] ?? '';
+    this._body = data["body"] ?? '';
     if (data.containsKey("_id")) {
       this._id = data["_id"];
     }
@@ -83,8 +76,7 @@ class SmsMessage implements Comparable<SmsMessage> {
       this._date = new DateTime.fromMillisecondsSinceEpoch(data["date"]);
     }
     if (data.containsKey("date_sent")) {
-      this._dateSent =
-          new DateTime.fromMillisecondsSinceEpoch(data["date_sent"]);
+      this._dateSent = new DateTime.fromMillisecondsSinceEpoch(data["date_sent"]);
     }
   }
 
@@ -107,51 +99,51 @@ class SmsMessage implements Comparable<SmsMessage> {
       res["read"] = _read;
     }
     if (_date != null) {
-      res["date"] = _date.millisecondsSinceEpoch;
+      res["date"] = _date?.millisecondsSinceEpoch;
     }
     if (_dateSent != null) {
-      res["dateSent"] = _dateSent.millisecondsSinceEpoch;
+      res["dateSent"] = _dateSent?.millisecondsSinceEpoch;
     }
     return res;
   }
 
   /// Get message id
-  int get id => this._id;
+  int? get id => this._id;
 
   /// Get thread id
-  int get threadId => this._threadId;
+  int? get threadId => this._threadId;
 
   /// Get sender, alias phone number
-  String get sender => this._address;
+  String? get sender => this._address;
 
   /// Get address, alias phone number
-  String get address => this._address;
+  String? get address => this._address;
 
   /// Get message body
-  String get body => this._body;
+  String? get body => this._body;
 
   /// Check if message is read
-  bool get isRead => this._read;
+  bool? get isRead => this._read;
 
   /// Get date
-  DateTime get date => this._date;
+  DateTime? get date => this._date;
 
   /// Get date sent
-  DateTime get dateSent => this._dateSent;
+  DateTime? get dateSent => this._dateSent;
 
   /// Get message kind
-  SmsMessageKind get kind => this._kind;
+  SmsMessageKind? get kind => this._kind;
 
   Stream<SmsMessageState> get onStateChanged => _stateStreamController.stream;
 
   /// Set message kind
-  set kind(SmsMessageKind kind) => this._kind = kind;
+  set kind(SmsMessageKind? kind) => this._kind = kind;
 
   /// Set message date
-  set date(DateTime date) => this._date = date;
+  set date(DateTime? date) => this._date = date;
 
   /// Get message state
-  get state => this._state;
+  SmsMessageState get state => this._state;
 
   set state(SmsMessageState state) {
     if (this._state != state) {
@@ -162,22 +154,22 @@ class SmsMessage implements Comparable<SmsMessage> {
 
   @override
   int compareTo(SmsMessage other) {
-    return other._id - this._id;
+    return other._id! - this._id!;
   }
 }
 
 /// A SMS thread
 class SmsThread {
-  int _id;
-  String _address;
-  Contact _contact;
+  int? _id;
+  String? _address;
+  Contact? _contact;
   List<SmsMessage> _messages = [];
 
   SmsThread(int id) : this._id = id;
 
   /// Create a thread from a list of message, the id will be taken from
   /// the first message
-  SmsThread.fromMessages(List<SmsMessage> messages) {
+  SmsThread.fromMessages(List<SmsMessage>? messages) {
     if (messages == null || messages.length == 0) {
       return;
     }
@@ -220,7 +212,7 @@ class SmsThread {
   /// Set contact through contact query
   Future findContact() async {
     ContactQuery query = new ContactQuery();
-    Contact contact = await query.queryContact(this._address);
+    Contact? contact = await query.queryContact(this._address);
     if (contact != null) {
       this._contact = contact;
     }
@@ -230,22 +222,22 @@ class SmsThread {
   List<SmsMessage> get messages => this._messages;
 
   /// Get address
-  String get address => this._address;
+  String? get address => this._address;
 
   /// Set messages in thread
   set messages(List<SmsMessage> messages) => this._messages = messages;
 
   /// Get thread id
-  int get id => this._id;
+  int? get id => this._id;
 
   /// Get thread id (for compatibility)
-  int get threadId => this._id;
+  int? get threadId => this._id;
 
   /// Get contact info
-  Contact get contact => this._contact;
+  Contact? get contact => this._contact;
 
   /// Set contact info
-  set contact(Contact contact) => this._contact = contact;
+  set contact(Contact? contact) => this._contact = contact;
 }
 
 /// A SMS receiver that creates a stream of SMS
@@ -258,17 +250,16 @@ class SmsThread {
 /// receiver.onSmsReceived.listen((SmsMessage msg) => ...);
 /// ```
 class SmsReceiver {
-  static SmsReceiver _instance;
-  final EventChannel _channel;
-  Stream<SmsMessage> _onSmsReceived;
+  static SmsReceiver? _instance;
+  final EventChannel? _channel;
+  Stream<SmsMessage>? _onSmsReceived;
 
   factory SmsReceiver() {
     if (_instance == null) {
-      final EventChannel eventChannel = const EventChannel(
-          "plugins.babariviere.com/recvSMS", const JSONMethodCodec());
+      final EventChannel eventChannel = const EventChannel("plugins.babariviere.com/recvSMS", const JSONMethodCodec());
       _instance = new SmsReceiver._private(eventChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   SmsReceiver._private(this._channel);
@@ -277,40 +268,37 @@ class SmsReceiver {
   Stream<SmsMessage> get onSmsReceived {
     if (_onSmsReceived == null) {
       print("Creating sms receiver");
-      _onSmsReceived = _channel.receiveBroadcastStream().map((dynamic event) {
+      _onSmsReceived = _channel?.receiveBroadcastStream().map((dynamic event) {
         SmsMessage msg = new SmsMessage.fromJson(event);
         msg.kind = SmsMessageKind.Received;
         return msg;
       });
     }
-    return _onSmsReceived;
+    return _onSmsReceived!;
   }
 }
 
 /// A SMS sender
 class SmsSender {
-  static SmsSender _instance;
-  final MethodChannel _channel;
-  final EventChannel _stateChannel;
-  Map<int, SmsMessage> _sentMessages;
-  int _sentId = 0;
-  final StreamController<SmsMessage> _deliveredStreamController =
-      new StreamController<SmsMessage>();
+  static SmsSender? _instance;
+  final MethodChannel? _channel;
+  final EventChannel? _stateChannel;
+  Map<int, SmsMessage>? _sentMessages;
+  int? _sentId = 0;
+  final StreamController<SmsMessage> _deliveredStreamController = new StreamController<SmsMessage>();
 
   factory SmsSender() {
     if (_instance == null) {
-      final MethodChannel methodChannel = const MethodChannel(
-          "plugins.babariviere.com/sendSMS", const JSONMethodCodec());
-      final EventChannel stateChannel = const EventChannel(
-          "plugins.babariviere.com/statusSMS", const JSONMethodCodec());
+      final MethodChannel methodChannel = const MethodChannel("plugins.babariviere.com/sendSMS", const JSONMethodCodec());
+      final EventChannel stateChannel = const EventChannel("plugins.babariviere.com/statusSMS", const JSONMethodCodec());
 
       _instance = new SmsSender._private(methodChannel, stateChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   SmsSender._private(this._channel, this._stateChannel) {
-    _stateChannel.receiveBroadcastStream().listen(this._onSmsStateChanged);
+    _stateChannel?.receiveBroadcastStream().listen(this._onSmsStateChanged);
 
     _sentMessages = new Map<int, SmsMessage>();
   }
@@ -320,7 +308,7 @@ class SmsSender {
   /// Take a message in argument + 2 functions that will be called on success or on error
   ///
   /// This function will not set automatically thread id, you have to do it
-  Future<SmsMessage> sendSms(SmsMessage msg, {SimCard simCard}) async {
+  Future<SmsMessage?> sendSms(SmsMessage? msg, {SimCard? simCard}) async {
     if (msg == null || msg.address == null || msg.body == null) {
       if (msg == null) {
         throw ("no given message");
@@ -334,18 +322,18 @@ class SmsSender {
 
     msg.state = SmsMessageState.Sending;
     Map map = msg.toMap;
-    this._sentMessages.putIfAbsent(this._sentId, () => msg);
+    if(this._sentId != null)this._sentMessages?.putIfAbsent(this._sentId!, () => msg);
     map['sentId'] = this._sentId;
     if (simCard != null) {
       map['subId'] = simCard.slot;
     }
-    this._sentId += 1;
+    if (this._sentId != null) this._sentId = this._sentId! + 1;
 
     if (simCard != null) {
       map['simCard'] = simCard.imei;
     }
 
-    await _channel.invokeMethod("sendSMS", map);
+    await _channel?.invokeMethod("sendSMS", map);
     msg.date = new DateTime.now();
 
     return msg;
@@ -355,24 +343,24 @@ class SmsSender {
 
   void _onSmsStateChanged(dynamic stateChange) {
     int id = stateChange['sentId'];
-    if (_sentMessages.containsKey(id)) {
+    if (_sentMessages?.containsKey(id) ==true) {
       switch (stateChange['state']) {
         case 'sent':
           {
-            _sentMessages[id].state = SmsMessageState.Sent;
+            _sentMessages?[id]?.state = SmsMessageState.Sent;
             break;
           }
         case 'delivered':
           {
-            _sentMessages[id].state = SmsMessageState.Delivered;
-            _deliveredStreamController.add(_sentMessages[id]);
-            _sentMessages.remove(id);
+            _sentMessages?[id]?.state = SmsMessageState.Delivered;
+            if(_sentMessages?[id] != null)_deliveredStreamController.add(_sentMessages![id]!);
+            _sentMessages?.remove(id);
             break;
           }
         case 'fail':
           {
-            _sentMessages[id].state = SmsMessageState.Fail;
-            _sentMessages.remove(id);
+            _sentMessages?[id]?.state = SmsMessageState.Fail;
+            _sentMessages?.remove(id);
             break;
           }
       }
@@ -384,27 +372,21 @@ enum SmsQueryKind { Inbox, Sent, Draft }
 
 /// A SMS query
 class SmsQuery {
-  static SmsQuery _instance;
+  static SmsQuery? _instance;
   final MethodChannel _channel;
 
   factory SmsQuery() {
     if (_instance == null) {
-      final MethodChannel methodChannel = const MethodChannel(
-          "plugins.babariviere.com/querySMS", const JSONMethodCodec());
+      final MethodChannel methodChannel = const MethodChannel("plugins.babariviere.com/querySMS", const JSONMethodCodec());
       _instance = new SmsQuery._private(methodChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   SmsQuery._private(this._channel);
 
   /// Wrapper for query only one kind
-  Future<List<SmsMessage>> _querySmsWrapper(
-      {int start,
-      int count,
-      String address,
-      int threadId,
-      SmsQueryKind kind: SmsQueryKind.Inbox}) async {
+  Future<List<SmsMessage>> _querySmsWrapper({int? start, int? count, String? address, int? threadId, SmsQueryKind kind: SmsQueryKind.Inbox}) async {
     Map arguments = {};
     if (start != null && start >= 0) {
       arguments["start"] = start;
@@ -443,12 +425,7 @@ class SmsQuery {
 
   /// Query a list of SMS
   Future<List<SmsMessage>> querySms(
-      {int start,
-      int count,
-      String address,
-      int threadId,
-      List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox],
-      bool sort: true}) async {
+      {int? start, int? count, String? address, int? threadId, List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox], bool sort: true}) async {
     List<SmsMessage> result = [];
     for (var kind in kinds) {
       result
@@ -467,8 +444,7 @@ class SmsQuery {
   }
 
   /// Query multiple thread by id
-  Future<List<SmsThread>> queryThreads(List<int> threadsId,
-      {List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox]}) async {
+  Future<List<SmsThread>> queryThreads(List<int> threadsId, {List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox]}) async {
     List<SmsThread> threads = <SmsThread>[];
     for (var id in threadsId) {
       final messages = await this.querySms(threadId: id, kinds: kinds);
@@ -481,8 +457,7 @@ class SmsQuery {
 
   /// Get all SMS
   Future<List<SmsMessage>> get getAllSms async {
-    return this.querySms(
-        kinds: [SmsQueryKind.Sent, SmsQueryKind.Inbox, SmsQueryKind.Draft]);
+    return this.querySms(kinds: [SmsQueryKind.Sent, SmsQueryKind.Inbox, SmsQueryKind.Draft]);
   }
 
   /// Get all threads
@@ -491,13 +466,13 @@ class SmsQuery {
     Map<int, List<SmsMessage>> filtered = {};
     messages.forEach((msg) {
       if (!filtered.containsKey(msg.threadId)) {
-        filtered[msg.threadId] = [];
+        filtered[msg.threadId!] = [];
       }
-      filtered[msg.threadId].add(msg);
+      filtered[msg.threadId]?.add(msg);
     });
     List<SmsThread> threads = <SmsThread>[];
     for (var k in filtered.keys) {
-      final thread = new SmsThread.fromMessages(filtered[k]);
+      final thread = new SmsThread.fromMessages(filtered[k]!);
       await thread.findContact();
       threads.add(thread);
     }
@@ -516,16 +491,13 @@ enum SimCardState {
 
 /// Represents a device's sim card info
 class SimCard {
-  int slot;
-  String imei;
-  SimCardState state;
+  int? slot;
+  String? imei;
+  SimCardState? state;
 
-  SimCard({
-    @required this.slot,
-    @required this.imei,
-    this.state = SimCardState.Unknown
-  }) : assert(slot != null),
-       assert(imei != null);
+  SimCard({@required this.slot, @required this.imei, this.state = SimCardState.Unknown})
+      : assert(slot != null),
+        assert(imei != null);
 
   SimCard.fromJson(Map map) {
     if (map.containsKey('slot')) {
@@ -535,7 +507,7 @@ class SimCard {
       this.imei = map['imei'];
     }
     if (map.containsKey('state')) {
-      switch(map['state']) {
+      switch (map['state']) {
         case 0:
           this.state = SimCardState.Unknown;
           break;
@@ -560,25 +532,24 @@ class SimCard {
 }
 
 class SimCardsProvider {
-  static SimCardsProvider _instance;
+  static SimCardsProvider? _instance;
   final MethodChannel _channel;
 
   factory SimCardsProvider() {
     if (_instance == null) {
-      final MethodChannel methodChannel = const MethodChannel(
-          "plugins.babariviere.com/simCards", const JSONMethodCodec());
+      final MethodChannel methodChannel = const MethodChannel("plugins.babariviere.com/simCards", const JSONMethodCodec());
       _instance = new SimCardsProvider._private(methodChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   SimCardsProvider._private(this._channel);
 
   Future<List<SimCard>> getSimCards() async {
-    final simCards = new List<SimCard>();
+    final List<SimCard> simCards = [];
 
     dynamic response = await _channel.invokeMethod('getSimCards', null);
-    for(Map map in response) {
+    for (Map map in response) {
       simCards.add(new SimCard.fromJson(map));
     }
 
