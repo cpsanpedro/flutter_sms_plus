@@ -36,7 +36,7 @@ Then run the command `flutter packages get` on the console.
 Add the import statement for `sms` and create an instance of the *SmsQuery* class:
 
 ```dart
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_sms_plus/flutter_sms_plus.dart';
 
 void main() {
   SmsQuery query = new SmsQuery();
@@ -138,7 +138,7 @@ print(profile.fullName);
 What about sending a SMS? All you have to do is to create an instance of the `SmsSender` class:
 
 ```dart
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_sms_plus/flutter_sms_plus.dart';
 
 void main() {
   SmsSender sender = new SmsSender();
@@ -151,7 +151,7 @@ void main() {
 To be notified when the message is sent and/or delivered, you must add a listener to your message:
 
 ```dart
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_sms_plus/flutter_sms_plus.dart';
 
 void main() {
   SmsSender sender = new SmsSender();
@@ -199,7 +199,7 @@ sender.sendSMS(message, simCard: card);
 If you want to be notified for incoming new messages you must subscribe to an instance of the `SmsReceiver` class:
 
 ```dart
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_sms_plus/flutter_sms_plus.dart';
 
 void main() {
   SmsReceiver receiver = new SmsReceiver();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_sms_plus/flutter_sms_plus.dart';
 import '../utils/colors.dart';
 import 'conversationStore.dart';
 import 'formSend.dart';
