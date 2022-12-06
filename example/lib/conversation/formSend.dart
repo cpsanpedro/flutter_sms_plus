@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sms/contact.dart';
-import 'package:sms/sms.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import '../sim/sim_bloc_provider.dart';
 
 typedef void MessageSentCallback(SmsMessage message);

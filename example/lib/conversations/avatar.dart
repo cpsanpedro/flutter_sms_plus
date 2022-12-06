@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sms/contact.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 import '../utils/colors.dart';
 

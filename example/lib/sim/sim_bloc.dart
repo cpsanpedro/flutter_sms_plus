@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:sms/sms.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class SimCardsBloc {
   SimCardsBloc() {

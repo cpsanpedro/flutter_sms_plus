@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sms/contact.dart';
-import 'package:sms/sms.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 import '../conversation/conversation.dart';
 import 'avatar.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:sms/contact.dart';
-import 'package:sms/sms.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class ConversationStore extends InheritedWidget {
   const ConversationStore(this.userProfile, this.thread, {Widget child}) : super(child: child);
