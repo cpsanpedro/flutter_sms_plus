@@ -1,6 +1,6 @@
 ![xxhdpi](https://user-images.githubusercontent.com/37498811/41118114-d9cad440-6ab0-11e8-9254-68d6aac245be.png)
 
-# [UNMAINTAINED] This project is unmaintained
+# This project is forked from [Flutter SMS](https://github.com/babariviere/flutter_sms) by babariviere.
 
 
 # Flutter SMS
@@ -26,7 +26,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  sms: ^0.2.0
+  sms: ^1.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
