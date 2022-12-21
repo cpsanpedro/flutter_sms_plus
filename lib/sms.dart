@@ -444,7 +444,7 @@ class SmsQuery {
   }
 
   /// Query multiple thread by id
-  Future<List<SmsThread>> queryThreads(List<int> threadsId, {List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox]}) async {
+  Future<List<SmsThread>> queryThreads(List<int> threadsId, {List<SmsQueryKind> kinds: const [SmsQueryKind.Inbox, SmsQueryKind.Sent]}) async {
     List<SmsThread> threads = <SmsThread>[];
     for (var id in threadsId) {
       final messages = await this.querySms(threadId: id, kinds: kinds);
